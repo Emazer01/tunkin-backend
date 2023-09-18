@@ -4,7 +4,9 @@ const { userController } = require('../controller')
 const Auth = require('../middleware/auth')
 const { Validation } = require('../validators')
 
-router.post('/register', Validation.register, userController.register)
+
+
+/*router.post('/register', Validation.register, userController.register)
 
 router.post('/login', Validation.login, userController.login)
 
