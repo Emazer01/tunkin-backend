@@ -122,6 +122,10 @@ const view = async (pers_id) => {
                         on dp.pers_jabatan = j.jab_id
                         inner join korps as f
                         on dp.pers_korps = f.korps_id
+                        inner join agama as g
+                        on dp.pers_agama = g.ag_id
+                        inner join matra as m
+                        on dp.pers_matra = m.matra_id
                         where dp.pers_id = $1`;
         const detail_pers = (await db.query(query, [pers_id])).rows;
         return (detail_pers)
