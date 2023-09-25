@@ -5,9 +5,16 @@ const Auth = require('../middleware/auth')
 const { Validation } = require('../validators')
 
 
+router.get('/dataDropdown', userController.dataDropdown)
 
-/*router.post('/register', Validation.register, userController.register)
+router.get('/dataLog', userController.dataLog)
 
+router.get('/dataPers', userController.dataPers)
+
+router.post('/tambah', userController.tambah)
+
+router.post('/view', userController.view)
+/*
 router.post('/login', Validation.login, userController.login)
 
 router.post('/verify', Auth.verifyToken, userController.verify)

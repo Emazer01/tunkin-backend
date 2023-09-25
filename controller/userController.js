@@ -9,7 +9,58 @@ const { query } = require('express');
 const { Services } = require('../services/index.js');
 SECRET = process.env.SECRET
 
+const dataDropdown = async (req, res, next) => {
+    try {
+        const dataDropdown = await Services.dataDropdown()
+        res.status(200).json(dataDropdown)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
 
+const dataLog = async (req, res, next) => {
+    try {
+        const dataLog = await Services.dataLog()
+        res.status(200).json(dataLog)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
+
+const dataPers = async (req, res, next) => {
+    try {
+        const dataPers = await Services.dataPers()
+        res.status(200).json(dataPers)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
+
+const tambah = async (req, res, next) => {
+    // 9. komparasi antara password yang diinput oleh pengguna dan password yang ada didatabase
+    const {nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek } = req.body
+    try {
+        var result = await Services.tambah(nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        res.send(result)
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+const view = async (req, res, next) => {
+    try {
+        const body = req.body
+        const detail_pers = await Services.view(body.pers_id)
+        console.log(detail_pers)
+        res.status(200).json(detail_pers)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
 
 /*
 const register = async (req, res, next) => {
@@ -209,7 +260,11 @@ const view_transaksi = async (req, res, next) => {
 }
 */
 module.exports = {
-    
+    dataDropdown,
+    tambah,
+    dataLog,
+    dataPers,
+    view
     /*register,
     login,
     verify,

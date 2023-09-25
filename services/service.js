@@ -3,6 +3,133 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { response } = require('express');
 
+const tambah = async (nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek) => {
+    try {
+        console.log(nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        const query = `INSERT INTO data_personel
+        (pers_nrp, pers_nama, pers_gender, pers_matra, pers_pangkat, pers_korps, pers_jabatan, pers_satker, pers_dpp, pers_kawin, pers_agama, pers_tl, pers_mkg, pers_tmt_kgb, pers_stat_tunjab, pers_tmt_jab, pers_grade, pers_tk_papua, pers_tk_terluar, pers_tk_terpencil, pers_persekot, pers_gantirugi, pers_sewarumah, pers_stat_sandi, pers_eselon_sandi, pers_tmt_sandi, pers_rek)
+        VALUES
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27)`
+        const result = await db.query(query, [nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek])
+        if (!result) {
+            throw new Error('Error inserting Data');
+        }
+        return {
+            message: 'Data inserted successfully',
+        };
+    } catch (error) {
+        console.log(error)
+        response.send("error")
+        return error;
+    }
+}
+
+const dataLog = async () => {
+    try {
+        //matra
+        const query = `SELECT 
+                        a.log_stamp, a.log_tipe, e.tipe_label, a.pers_nama, a.pers_pangkat, b.pangkat_label, a.pers_satker, c.satker_label, a.pers_jabatan, d.jab_label, f.korps_kode 
+                        FROM log_data as a
+                        inner join pangkat as b
+                        on a.pers_pangkat = b.pangkat_id 
+                        inner join satker as c
+                        on a.pers_satker  = c.satker_id 
+                        inner join jabatan as d
+                        on a.pers_jabatan  = d.jab_id
+                        inner join tipe as e
+                        on a.log_tipe = e.tipe_id
+                        inner join korps as f
+                        on a.pers_korps = f.korps_id
+                        order by log_stamp desc
+                        limit 10;`;
+        const hasil = (await db.query(query)).rows
+
+        return (hasil)
+    } catch {
+        return Error
+    }
+}
+
+const dataPers = async () => {
+    try {
+        //matra
+        const query = `select dp.pers_id, dp.pers_nrp, dp.pers_nama, dp.pers_pangkat, p.pangkat_label, dp.pers_satker, s.satker_label, dp.pers_jabatan, j.jab_label, f.korps_kode  
+                        from data_personel as dp
+                        inner join pangkat as p
+                        on dp.pers_pangkat = p.pangkat_id 
+                        inner join satker as s
+                        on dp.pers_satker = s.satker_id 
+                        inner join jabatan as j
+                        on dp.pers_jabatan = j.jab_id
+                        inner join korps as f
+                        on dp.pers_korps = f.korps_id`;
+        const hasil = (await db.query(query)).rows
+
+        return (hasil)
+    } catch {
+        return Error
+    }
+}
+
+const dataDropdown = async () => {
+    try {
+        //matra
+        const query1 = 'SELECT * FROM matra';
+
+        //korps
+        const query2 = 'SELECT * FROM korps';
+
+        //pangkat
+        const query3 = 'SELECT * FROM pangkat';
+
+        //jabatan
+        const query4 = 'SELECT * FROM jabatan';
+
+        //satker
+        const query5 = 'SELECT * FROM satker';
+
+        const matra = (await db.query(query1)).rows
+        const korps = (await db.query(query2)).rows
+        const pangkat = (await db.query(query3)).rows
+        const jabatan = (await db.query(query4)).rows
+        const satker = (await db.query(query5)).rows
+
+        const hasil = {
+            matra: matra,
+            korps: korps,
+            pangkat: pangkat,
+            jabatan: jabatan,
+            satker: satker
+        }
+
+        return (hasil)
+    } catch {
+        return Error
+    }
+}
+
+const view = async (pers_id) => {
+    try {
+        console.log("sampe service view")
+        console.log(pers_id)
+        const query = `select *
+                        from data_personel as dp
+                        inner join pangkat as p
+                        on dp.pers_pangkat = p.pangkat_id 
+                        inner join satker as s
+                        on dp.pers_satker = s.satker_id 
+                        inner join jabatan as j
+                        on dp.pers_jabatan = j.jab_id
+                        inner join korps as f
+                        on dp.pers_korps = f.korps_id
+                        where dp.pers_id = $1`;
+        const detail_pers = (await db.query(query, [pers_id])).rows;
+        return (detail_pers)
+    } catch {
+        return Error
+    }
+}
+
 /*
 const register = async (username, email, password, wartawan) => {
     try {
@@ -235,32 +362,9 @@ const view_transaksi = async (profile_id) => {
 */
 
 module.exports = {
-    register,
-    login,
-    verify,
-    updateprofile,
-    updateakun,
-    submitberita,
-    beritas,
-    main,
-    view,
-    verifwar,
-    penawarans,
-    submitpenawaran,
-    submitbayar,
-    view_transaksi,
-    mypenawaran,
-    myproses
-    /*changePw,
-    addresses,
-    updateaddress,
-    addaddress,
-    requests,
-    addrequest,
-    deleteaddress,
-    deleterequest,
-    pickedrequest,
-    addorder,
-    orders,
-    updateorder*/
+    dataDropdown,
+    tambah,
+    dataLog,
+    dataPers,
+    view
 }
