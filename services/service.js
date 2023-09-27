@@ -24,6 +24,28 @@ const tambah = async (nrp, nama, gender, matra, pangkat, korps, jabatan, satker,
     }
 }
 
+const update = async (id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek) => {
+    try {
+        console.log(id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        const query = `UPDATE data_personel
+                        SET
+                        pers_pangkat = $2, pers_jabatan = $3, pers_satker = $4, pers_dpp = $5, pers_kawin = $6, pers_mkg = $7, pers_tmt_kgb = $8, pers_stat_tunjab = $9, pers_tmt_jab = $10, pers_grade = $11, pers_tk_papua = $12, pers_tk_terluar = $13, pers_tk_terpencil = $14, pers_persekot = $15, pers_gantirugi = $16, pers_sewarumah = $17, pers_stat_sandi = $18, pers_eselon_sandi = $19, pers_tmt_sandi = $20, pers_rek = $21
+                        WHERE
+                        pers_id = $1`
+        const result = await db.query(query, [id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek])
+        if (!result) {
+            throw new Error('Error updating Data');
+        }
+        return {
+            message: 'Data updated successfully',
+        };
+    } catch (error) {
+        console.log(error)
+        response.send("error")
+        return error;
+    }
+}
+
 const dataLog = async () => {
     try {
         //matra
@@ -34,14 +56,39 @@ const dataLog = async () => {
                         on a.pers_pangkat = b.pangkat_id 
                         inner join satker as c
                         on a.pers_satker  = c.satker_id 
-                        inner join jabatan as d
+                        left join jabatan as d
                         on a.pers_jabatan  = d.jab_id
                         inner join tipe as e
                         on a.log_tipe = e.tipe_id
                         inner join korps as f
                         on a.pers_korps = f.korps_id
                         order by log_stamp desc
-                        limit 10;`;
+                        limit 5;`;
+        const hasil = (await db.query(query)).rows
+
+        return (hasil)
+    } catch {
+        return Error
+    }
+}
+
+const dataLogAll = async () => {
+    try {
+        //matra
+        const query = `SELECT 
+                        a.log_stamp, a.log_tipe, e.tipe_label, a.pers_nama, a.pers_pangkat, b.pangkat_label, a.pers_satker, c.satker_label, a.pers_jabatan, d.jab_label, f.korps_kode 
+                        FROM log_data as a
+                        inner join pangkat as b
+                        on a.pers_pangkat = b.pangkat_id 
+                        inner join satker as c
+                        on a.pers_satker  = c.satker_id 
+                        left join jabatan as d
+                        on a.pers_jabatan  = d.jab_id
+                        inner join tipe as e
+                        on a.log_tipe = e.tipe_id
+                        inner join korps as f
+                        on a.pers_korps = f.korps_id
+                        order by log_stamp desc;`;
         const hasil = (await db.query(query)).rows
 
         return (hasil)
@@ -59,7 +106,7 @@ const dataPers = async () => {
                         on dp.pers_pangkat = p.pangkat_id 
                         inner join satker as s
                         on dp.pers_satker = s.satker_id 
-                        inner join jabatan as j
+                        left join jabatan as j
                         on dp.pers_jabatan = j.jab_id
                         inner join korps as f
                         on dp.pers_korps = f.korps_id`;
@@ -110,15 +157,13 @@ const dataDropdown = async () => {
 
 const view = async (pers_id) => {
     try {
-        console.log("sampe service view")
-        console.log(pers_id)
         const query = `select *
                         from data_personel as dp
                         inner join pangkat as p
                         on dp.pers_pangkat = p.pangkat_id 
                         inner join satker as s
                         on dp.pers_satker = s.satker_id 
-                        inner join jabatan as j
+                        left join jabatan as j
                         on dp.pers_jabatan = j.jab_id
                         inner join korps as f
                         on dp.pers_korps = f.korps_id
@@ -370,5 +415,7 @@ module.exports = {
     tambah,
     dataLog,
     dataPers,
-    view
+    view,
+    update,
+    dataLogAll
 }

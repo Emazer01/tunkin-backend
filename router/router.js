@@ -9,9 +9,13 @@ router.get('/dataDropdown', userController.dataDropdown)
 
 router.get('/dataLog', userController.dataLog)
 
+router.get('/dataLogAll', userController.dataLogAll)
+
 router.get('/dataPers', userController.dataPers)
 
 router.post('/tambah', userController.tambah)
+
+router.post('/update', userController.update)
 
 router.post('/view', userController.view)
 /*
