@@ -18,6 +18,10 @@ router.post('/tambah', userController.tambah)
 router.post('/update', userController.update)
 
 router.post('/view', userController.view)
+
+router.post('/lapSatker', userController.lapSatker)
+
+router.post('/hapus', userController.hapus)
 /*
 router.post('/login', Validation.login, userController.login)
 

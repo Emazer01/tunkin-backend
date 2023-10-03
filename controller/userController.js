@@ -83,6 +83,29 @@ const view = async (req, res, next) => {
     }
 }
 
+const lapSatker = async (req, res, next) => {
+    try {
+        const body = req.body
+        const lapSatker = await Services.lapSatker(body.satker_id)
+        console.log(lapSatker)
+        res.status(200).json(lapSatker)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
+
+const hapus = async (req, res, next) => {
+    try {
+        const body = req.body
+        const result = await Services.hapus(body.pers_id)
+        res.status(200).json(result)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
+
 /*
 const register = async (req, res, next) => {
     // * 7. silahkan ubah password yang telah diterima menjadi dalam bentuk hashing
@@ -287,21 +310,7 @@ module.exports = {
     dataPers,
     view,
     update,
-    dataLogAll
-    /*register,
-    login,
-    verify,
-    updateprofile,
-    updateakun,
-    submitberita,
-    beritas,
-    main,
-    view,
-    penawarans,
-    verifwar,
-    submitpenawaran,
-    submitbayar,
-    view_transaksi,
-    mypenawaran,
-    myproses*/
+    dataLogAll,
+    hapus,
+    lapSatker
 }

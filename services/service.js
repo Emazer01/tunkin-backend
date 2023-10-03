@@ -179,6 +179,62 @@ const view = async (pers_id) => {
     }
 }
 
+const lapSatker = async (satker_id) => {
+    try {
+        const query = `select s.satker_label, dp.pers_id, dp.pers_nama, p.pangkat_label, k.korps_kode, dp.pers_nrp,dp.pers_tl, sk.kawin_label, je.jabes_label, dp.pers_tmt_kgb, km.kmkg_label,dp.pers_mkg, j.jab_label, dp.pers_grade, dp.pers_tmt_jab, t.tunjab_jumlah, sk.kawin_ptkp ,kp.kpkt_jumlah, ag.ag_label, m.matra_label, grade_index
+        from data_personel as dp
+        inner join pangkat as p
+        on dp.pers_pangkat = p.pangkat_id 
+        inner join satker as s
+        on dp.pers_satker = s.satker_id 
+        left join jabatan as j
+        on dp.pers_jabatan = j.jab_id
+        inner join status_kawin as sk 
+        on dp.pers_kawin = sk.kawin_id
+        inner join jabatan_eselon as je
+        on j.jab_kode = je.jabes_kode
+        inner join kode_mkg as km
+        on p.pangkat_kmkg = km.kmkg_id
+        left join tunjab as t
+        on j.jab_kode = t.tunjab_kode
+        inner join kode_pangkat as kp
+        on p.pangkat_kpkt = kp.kpkt_kode and dp.pers_mkg = kp.kpkt_mkg
+        inner join agama as ag
+        on dp.pers_agama = ag.ag_id 
+        inner join matra as m
+        on dp.pers_matra = m.matra_id
+        inner join grade_kinerja as gk
+        on dp.pers_grade = gk.grade_id
+        left join korps as k
+        on dp.pers_korps = k.korps_id
+        where s.satker_id = $1
+        order by j.jab_kode;`;
+        const lapSatker = (await db.query(query, [satker_id])).rows;
+        return (lapSatker)
+    } catch {
+        return Error
+    }
+}
+
+const hapus = async (pers_id) => {
+    try {
+      console.log(pers_id);
+      const query = `DELETE from data_personel WHERE pers_id = $1`;
+  
+      const result = await db.query(query, [pers_id]);
+      if (!result) {
+        throw new Error("Error deleting Data");
+      }
+      return {
+        message: "Data deleted successfully",
+      };
+    } catch (error) {
+      console.log(error);
+      response.send("error");
+      return error;
+    }
+  };
+
 /*
 const register = async (username, email, password, wartawan) => {
     try {
@@ -417,5 +473,7 @@ module.exports = {
     dataPers,
     view,
     update,
-    dataLogAll
+    dataLogAll,
+    hapus,
+    lapSatker
 }
