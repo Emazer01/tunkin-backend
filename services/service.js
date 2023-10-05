@@ -181,7 +181,7 @@ const view = async (pers_id) => {
 
 const lapSatker = async (satker_id) => {
     try {
-        const query = `select s.satker_label, dp.pers_id, dp.pers_nama, p.pangkat_label, k.korps_kode, dp.pers_nrp,dp.pers_tl, sk.kawin_label, je.jabes_label, dp.pers_tmt_kgb, km.kmkg_label,dp.pers_mkg, j.jab_label, dp.pers_grade, dp.pers_tmt_jab, t.tunjab_jumlah, sk.kawin_ptkp ,kp.kpkt_jumlah, ag.ag_label, m.matra_label, grade_index
+        const query = `select s.satker_label, dp.pers_dpp, dp.pers_id, dp.pers_nama, p.pangkat_label, k.korps_kode, dp.pers_nrp,dp.pers_tl, sk.kawin_label, je.jabes_label, dp.pers_tmt_kgb, km.kmkg_label,dp.pers_mkg, j.jab_label, dp.pers_grade, dp.pers_tmt_jab, t.tunjab_jumlah, sk.kawin_ptkp ,kp.kpkt_jumlah, ag.ag_label, m.matra_label, grade_index
         from data_personel as dp
         inner join pangkat as p
         on dp.pers_pangkat = p.pangkat_id 
@@ -208,7 +208,7 @@ const lapSatker = async (satker_id) => {
         left join korps as k
         on dp.pers_korps = k.korps_id
         where s.satker_id = $1
-        order by j.jab_kode;`;
+        order by dp.pers_dpp, j.jab_kode;`;
         const lapSatker = (await db.query(query, [satker_id])).rows;
         return (lapSatker)
     } catch {
