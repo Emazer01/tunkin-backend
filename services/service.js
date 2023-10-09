@@ -160,17 +160,29 @@ const view = async (pers_id) => {
         const query = `select *
                         from data_personel as dp
                         inner join pangkat as p
-                        on dp.pers_pangkat = p.pangkat_id 
+                        on dp.pers_pangkat = p.pangkat_id
+                        inner join kode_mkg as km
+                        on p.pangkat_kmkg = km.kmkg_id
                         inner join satker as s
                         on dp.pers_satker = s.satker_id 
+                        inner join status_kawin as sk
+                        on dp.pers_kawin = sk.kawin_id 
                         left join jabatan as j
                         on dp.pers_jabatan = j.jab_id
+                        left join tunjab as t
+                        on j.jab_kode = t.tunjab_kode
                         inner join korps as f
                         on dp.pers_korps = f.korps_id
                         inner join agama as g
                         on dp.pers_agama = g.ag_id
                         inner join matra as m
                         on dp.pers_matra = m.matra_id
+                        inner join jabatan_eselon as je
+                        on j.jab_kode = je.jabes_kode
+                        inner join kode_pangkat as kp
+                        on p.pangkat_kpkt = kp.kpkt_kode and dp.pers_mkg = kp.kpkt_mkg
+                        inner join grade_kinerja as gk
+                        on dp.pers_grade = gk.grade_id
                         where dp.pers_id = $1`;
         const detail_pers = (await db.query(query, [pers_id])).rows;
         return (detail_pers)
