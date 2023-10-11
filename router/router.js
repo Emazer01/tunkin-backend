@@ -9,6 +9,8 @@ router.get('/dataDropdown', userController.dataDropdown)
 
 router.get('/dataLog', userController.dataLog)
 
+router.get('/main', userController.main)
+
 router.get('/dataLogAll', userController.dataLogAll)
 
 router.get('/dataPers', userController.dataPers)

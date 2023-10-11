@@ -29,6 +29,17 @@ const dataLog = async (req, res, next) => {
     }
 }
 
+const main = async (req, res, next) => {
+    try {
+        const main = await Services.main()
+        console.log(main)
+        res.status(200).json(main)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
+
 const dataLogAll = async (req, res, next) => {
     try {
         const dataLog = await Services.dataLogAll()
@@ -51,9 +62,9 @@ const dataPers = async (req, res, next) => {
 
 const tambah = async (req, res, next) => {
     // 9. komparasi antara password yang diinput oleh pengguna dan password yang ada didatabase
-    const {nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek } = req.body
+    const {nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek } = req.body
     try {
-        var result = await Services.tambah(nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        var result = await Services.tambah(nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
         res.send(result)
     } catch (error) {
         res.status(500).send(error);
@@ -62,9 +73,9 @@ const tambah = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     // 9. komparasi antara password yang diinput oleh pengguna dan password yang ada didatabase
-    const {id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek} = req.body
+    const {id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek} = req.body
     try {
-        var result = await Services.update(id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        var result = await Services.update(id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
         res.send(result)
     } catch (error) {
         res.status(500).send(error);
@@ -312,5 +323,6 @@ module.exports = {
     update,
     dataLogAll,
     hapus,
-    lapSatker
+    lapSatker,
+    main
 }

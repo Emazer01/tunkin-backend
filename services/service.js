@@ -3,14 +3,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { response } = require('express');
 
-const tambah = async (nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek) => {
+const tambah = async (nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek) => {
     try {
-        console.log(nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        console.log(nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
         const query = `INSERT INTO data_personel
-        (pers_nrp, pers_nama, pers_gender, pers_matra, pers_pangkat, pers_korps, pers_jabatan, pers_satker, pers_dpp, pers_kawin, pers_agama, pers_tl, pers_mkg, pers_tmt_kgb, pers_stat_tunjab, pers_tmt_jab, pers_grade, pers_tk_papua, pers_tk_terluar, pers_tk_terpencil, pers_persekot, pers_gantirugi, pers_sewarumah, pers_stat_sandi, pers_eselon_sandi, pers_tmt_sandi, pers_rek)
+        (pers_nrp, pers_nama, pers_gender, pers_matra, pers_pangkat, pers_korps, pers_jabatan, pers_satker, pers_dpp, pers_kawin, pers_agama, pers_tl, pers_mkg, pers_tmt_kgb, pers_stat_tunjab, pers_tmt_jab, pers_grade, pers_persekot, pers_gantirugi, pers_sewarumah, pers_stat_sandi, pers_eselon_sandi, pers_tmt_sandi, pers_rek)
         VALUES
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27)`
-        const result = await db.query(query, [nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek])
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)`
+        const result = await db.query(query, [nrp, nama, gender, matra, pangkat, korps, jabatan, satker, dpp, kawin, agama, tl, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek])
         if (!result) {
             throw new Error('Error inserting Data');
         }
@@ -24,15 +24,15 @@ const tambah = async (nrp, nama, gender, matra, pangkat, korps, jabatan, satker,
     }
 }
 
-const update = async (id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek) => {
+const update = async (id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek) => {
     try {
-        console.log(id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
+        console.log(id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek)
         const query = `UPDATE data_personel
                         SET
-                        pers_pangkat = $2, pers_jabatan = $3, pers_satker = $4, pers_dpp = $5, pers_kawin = $6, pers_mkg = $7, pers_tmt_kgb = $8, pers_stat_tunjab = $9, pers_tmt_jab = $10, pers_grade = $11, pers_tk_papua = $12, pers_tk_terluar = $13, pers_tk_terpencil = $14, pers_persekot = $15, pers_gantirugi = $16, pers_sewarumah = $17, pers_stat_sandi = $18, pers_eselon_sandi = $19, pers_tmt_sandi = $20, pers_rek = $21
+                        pers_pangkat = $2, pers_jabatan = $3, pers_satker = $4, pers_dpp = $5, pers_kawin = $6, pers_mkg = $7, pers_tmt_kgb = $8, pers_stat_tunjab = $9, pers_tmt_jab = $10, pers_grade = $11, pers_persekot = $12, pers_gantirugi = $13, pers_sewarumah = $14, pers_stat_sandi = $15, pers_eselon_sandi = $16, pers_tmt_sandi = $17, pers_rek = $18
                         WHERE
                         pers_id = $1`
-        const result = await db.query(query, [id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, tk_papua, tk_terluar, tk_terpencil, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek])
+        const result = await db.query(query, [id, pangkat, jabatan, satker, dpp, kawin, mkg, tmt_kgb, stat_tunjab, tmt_jab, grade, persekot, gantirugi, sewarumah, stat_sandi, eselon_sandi, tmt_sandi, rek])
         if (!result) {
             throw new Error('Error updating Data');
         }
@@ -67,6 +67,26 @@ const dataLog = async () => {
         const hasil = (await db.query(query)).rows
 
         return (hasil)
+    } catch {
+        return Error
+    }
+}
+
+const main = async () => {
+    try {
+        //matra
+        const query = `select count(*) from data_personel;`;
+        const hasil = (await db.query(query)).rows
+        const query2 = `select count(*) from log_data 
+                        where log_tipe != 1
+                        and extract(month from log_stamp)>= date_part('month', (SELECT current_timestamp));`;
+        const hasil2 = (await db.query(query2)).rows
+        const query3 = `select count(*) from log_data 
+                        where log_tipe = 1
+                        and extract(month from log_stamp)>= date_part('month', (SELECT current_timestamp));`;
+        const hasil3 = (await db.query(query3)).rows
+
+        return ([hasil, hasil2, hasil3])
     } catch {
         return Error
     }
@@ -177,14 +197,17 @@ const view = async (pers_id) => {
                         on dp.pers_agama = g.ag_id
                         inner join matra as m
                         on dp.pers_matra = m.matra_id
-                        inner join jabatan_eselon as je
+                        left join jabatan_eselon as je
                         on j.jab_kode = je.jabes_kode
                         inner join kode_pangkat as kp
                         on p.pangkat_kpkt = kp.kpkt_kode and dp.pers_mkg = kp.kpkt_mkg
                         inner join grade_kinerja as gk
                         on dp.pers_grade = gk.grade_id
+                        left join eselon_sandi as es
+                        on dp.pers_eselon_sandi = es.esandi_id
                         where dp.pers_id = $1`;
         const detail_pers = (await db.query(query, [pers_id])).rows;
+        console.log(detail_pers);
         return (detail_pers)
     } catch {
         return Error
@@ -193,7 +216,7 @@ const view = async (pers_id) => {
 
 const lapSatker = async (satker_id) => {
     try {
-        const query = `select s.satker_label, dp.pers_dpp, dp.pers_id, dp.pers_nama, p.pangkat_label, k.korps_kode, dp.pers_nrp,dp.pers_tl, sk.kawin_label, je.jabes_label, dp.pers_tmt_kgb, km.kmkg_label,dp.pers_mkg, j.jab_label, dp.pers_grade, dp.pers_tmt_jab, t.tunjab_jumlah, sk.kawin_ptkp ,kp.kpkt_jumlah, ag.ag_label, m.matra_label, grade_index
+        const query = `select dp.pers_persekot, dp.pers_gantirugi, dp.pers_sewarumah, p.pangkat_kpkt, s.satker_label, dp.pers_dpp, dp.pers_id, dp.pers_nama, p.pangkat_label, k.korps_kode, dp.pers_nrp,dp.pers_tl, sk.kawin_label, je.jabes_label, dp.pers_tmt_kgb, km.kmkg_label,dp.pers_mkg, j.jab_label, dp.pers_grade, dp.pers_tmt_jab, t.tunjab_jumlah, sk.kawin_ptkp ,kp.kpkt_jumlah, ag.ag_label, m.matra_label, grade_index, es.esandi_label, es.esandi_jumlah
         from data_personel as dp
         inner join pangkat as p
         on dp.pers_pangkat = p.pangkat_id 
@@ -203,7 +226,7 @@ const lapSatker = async (satker_id) => {
         on dp.pers_jabatan = j.jab_id
         inner join status_kawin as sk 
         on dp.pers_kawin = sk.kawin_id
-        inner join jabatan_eselon as je
+        left join jabatan_eselon as je
         on j.jab_kode = je.jabes_kode
         inner join kode_mkg as km
         on p.pangkat_kmkg = km.kmkg_id
@@ -219,6 +242,8 @@ const lapSatker = async (satker_id) => {
         on dp.pers_grade = gk.grade_id
         left join korps as k
         on dp.pers_korps = k.korps_id
+        left join eselon_sandi as es
+        on dp.pers_eselon_sandi = es.esandi_id
         where s.satker_id = $1
         order by dp.pers_dpp, j.jab_kode;`;
         const lapSatker = (await db.query(query, [satker_id])).rows;
@@ -230,22 +255,22 @@ const lapSatker = async (satker_id) => {
 
 const hapus = async (pers_id) => {
     try {
-      console.log(pers_id);
-      const query = `DELETE from data_personel WHERE pers_id = $1`;
-  
-      const result = await db.query(query, [pers_id]);
-      if (!result) {
-        throw new Error("Error deleting Data");
-      }
-      return {
-        message: "Data deleted successfully",
-      };
+        console.log(pers_id);
+        const query = `DELETE from data_personel WHERE pers_id = $1`;
+
+        const result = await db.query(query, [pers_id]);
+        if (!result) {
+            throw new Error("Error deleting Data");
+        }
+        return {
+            message: "Data deleted successfully",
+        };
     } catch (error) {
-      console.log(error);
-      response.send("error");
-      return error;
+        console.log(error);
+        response.send("error");
+        return error;
     }
-  };
+};
 
 /*
 const register = async (username, email, password, wartawan) => {
@@ -487,5 +512,6 @@ module.exports = {
     update,
     dataLogAll,
     hapus,
-    lapSatker
+    lapSatker,
+    main
 }
