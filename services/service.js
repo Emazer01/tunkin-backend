@@ -272,6 +272,55 @@ const hapus = async (pers_id) => {
     }
 };
 
+const login = async (username, password) => {
+    try {
+        const query = `SELECT * FROM user_data WHERE username=$1`
+        const user = await db.query(query, [username]);
+        console.log("setelah query");
+        console.log(user)
+        var id = user.rows[0]['user_id']
+        var username = user.rows[0]['username']
+        var hash = user.rows[0]['user_pass']
+        console.log(username,password)
+        var hasil = await bcrypt.compare(password, hash)
+        if (hasil == true) {
+            // 10. Generate token menggunakan jwt sign
+            let data = {
+                id: id,
+                username: username,
+                password: hash
+            }
+            const token = jwt.sign(data, SECRET);
+            const result = {
+                id: id,
+                username: username,
+                token: token
+            }
+            return (result)
+        } else {
+            return ('Password Salah');
+        }
+    } catch (error) {
+        console.log(error.message);
+        return ('Password Salah');
+    }
+}
+
+const verify = async (id) => {
+    try {
+        console.log(id)
+        const query = `SELECT * FROM user_data WHERE a.user_id=$1`
+        const user = (await db.query(query, [id])).rows
+        if (user == '') {
+            return ('Invalid User')
+        } else {
+            return ({ profile: user[0] })
+        }
+    } catch {
+
+    }
+}
+
 /*
 const register = async (username, email, password, wartawan) => {
     try {
@@ -333,20 +382,7 @@ const login = async (email, password) => {
     }
 }
 
-const verify = async (id) => {
-    try {
-        console.log(id)
-        const query = `SELECT a.profile_id, a.nama_lengkap, a.no_hp, a.foto, a.bio, b.level_akun_label FROM profile AS a INNER JOIN level_akun AS b ON a.level_akun_id=b.level_akun_id WHERE a.user_id=$1`
-        const user = (await db.query(query, [id])).rows
-        if (user == '') {
-            return ('Invalid User')
-        } else {
-            return ({ profile: user[0] })
-        }
-    } catch {
 
-    }
-}
 
 const updateprofile = async (id, namaLengkap, noTelepon, bio, fotoUrl) => {
     try {
@@ -513,5 +549,6 @@ module.exports = {
     dataLogAll,
     hapus,
     lapSatker,
-    main
+    main,
+    login
 }

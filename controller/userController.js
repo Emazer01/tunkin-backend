@@ -117,6 +117,18 @@ const hapus = async (req, res, next) => {
     }
 }
 
+const login = async (req, res, next) => {
+    // 9. komparasi antara password yang diinput oleh pengguna dan password yang ada didatabase
+    const { username, password } = req.body
+    console.log(username,password)
+    try {
+        var result = await Services.login(username, password)
+        res.send(result)
+    } catch (error) {
+        res.send("Email Tidak Valid");
+    }
+}
+
 /*
 const register = async (req, res, next) => {
     // * 7. silahkan ubah password yang telah diterima menjadi dalam bentuk hashing
@@ -324,5 +336,6 @@ module.exports = {
     dataLogAll,
     hapus,
     lapSatker,
-    main
+    main,
+    login
 }
