@@ -26,6 +26,8 @@ router.post('/lapSatker', userController.lapSatker)
 router.post('/hapus', userController.hapus)
 
 router.post('/login', userController.login)
+
+router.post('/verify', Auth.verifyToken, userController.verify)
 /*
 router.post('/login', Validation.login, userController.login)
 

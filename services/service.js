@@ -309,12 +309,12 @@ const login = async (username, password) => {
 const verify = async (id) => {
     try {
         console.log(id)
-        const query = `SELECT * FROM user_data WHERE a.user_id=$1`
+        const query = `SELECT * FROM user_data WHERE user_id=$1`
         const user = (await db.query(query, [id])).rows
         if (user == '') {
             return ('Invalid User')
         } else {
-            return ({ profile: user[0] })
+            return (user)
         }
     } catch {
 
@@ -550,5 +550,6 @@ module.exports = {
     hapus,
     lapSatker,
     main,
-    login
+    login,
+    verify
 }

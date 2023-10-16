@@ -129,6 +129,18 @@ const login = async (req, res, next) => {
     }
 }
 
+const verify = async (req, res, next) => {
+    try {
+        // 13. membuat verify
+        const decode = req.user
+        const user = await Services.verify(decode.id)
+        console.log(user)
+        res.status(200).json(user)
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).send(err)
+    }
+}
 /*
 const register = async (req, res, next) => {
     // * 7. silahkan ubah password yang telah diterima menjadi dalam bentuk hashing
@@ -337,5 +349,6 @@ module.exports = {
     hapus,
     lapSatker,
     main,
-    login
+    login,
+    verify
 }
