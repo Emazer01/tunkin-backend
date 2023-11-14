@@ -147,7 +147,7 @@ const dataDropdown = async () => {
         const query2 = 'SELECT * FROM korps';
 
         //pangkat
-        const query3 = 'SELECT * FROM pangkat';
+        const query3 = 'SELECT * FROM pangkat order by pangkat_id';
 
         //jabatan
         const query4 = 'SELECT * FROM jabatan';
@@ -245,7 +245,7 @@ const lapSatker = async (satker_id) => {
         left join eselon_sandi as es
         on dp.pers_eselon_sandi = es.esandi_id
         where s.satker_id = $1
-        order by dp.pers_dpp, j.jab_kode;`;
+        order by dp.pers_dpp, j.jab_kode, kp.kpkt_kode desc , dp.pers_mkg desc, dp.pers_nama asc;`;
         const lapSatker = (await db.query(query, [satker_id])).rows;
         return (lapSatker)
     } catch {
